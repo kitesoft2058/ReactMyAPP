@@ -13,7 +13,7 @@ const initState= { items : [
 //2.2 type과 고정된 데이터값 까지 가진 actoin
 //const setItemsAction= {type:'item/setItems', items:[{},{}]}
 //2.3 데이터를 전달받아 데이터로 설정되는 action object 생성 함수
-export const setItemAction= (items)=>{
+export const setItemsAction= (items)=>{
     return {type:'item/setItems', items: items}
 }
 //2.4 아이템 1개를 추가하는 기능 액션생성함수

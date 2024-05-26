@@ -1,16 +1,45 @@
 import KaoMap from "./component/KaoMap"
 import styled from 'styled-components'
 import { motion, useAnimation } from 'framer-motion'
+import { useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { addItemAction, setItemsAction } from "./redux/item"
 
 const Main= ()=>{
 
     const controls= useAnimation()
 
-    const showBottomSheet= ()=>{
+    let latitude=0
+    let longitude=0
+
+    const showBottomSheet= (lat,lng)=>{
+        latitude= lat
+        longitude= lng
         controls.start('open')
     }
 
     const aa=new Array(10).fill().map((v,i)=>i+1)
+
+    const items= useSelector( state=>state.itemsReducer.items )
+    const dispatch= useDispatch()
+
+    const titleRef= useRef()
+    const memoRef=useRef()
+    const clickSave=()=>{
+        const title= titleRef.current.value
+        const memo= memoRef.current.value
+        const item= {
+            no: items.lenght+1,
+            title,
+            memo,
+            photos:[],
+            date: '2024.05.30',
+            position: {lat:latitude, lng:longitude}
+        }
+        dispatch( addItemAction(item) )
+
+        controls.start('close')
+    }
 
     return (
         <div>
@@ -34,8 +63,8 @@ const Main= ()=>{
 
                 <BottomSheetContent>
                     <div className="text">
-                        <input placeholder="title"></input>
-                        <textarea placeholder="memo"></textarea>
+                        <input placeholder="title" ref={titleRef}></input>
+                        <textarea placeholder="memo" ref={memoRef}></textarea>
                     </div>
 
                     <div className="photos">
@@ -45,7 +74,7 @@ const Main= ()=>{
                     </div>
 
                     <div className="buttons">
-                        <button onClick={()=>controls.start('close')}>작성완료</button>
+                        <button onClick={clickSave}>작성완료</button>
                     </div>
 
                 </BottomSheetContent>
@@ -82,14 +111,17 @@ const BottomSheetHandle = styled.div`
     height: 8px;
     border-radius: 4px;
     background-color: silver;
-    margin: 16px auto;
+    margin: 8px auto;
 `
 
 // bottom sheet content
 const BottomSheetContent= styled.div`
     width: 100%;
+    height: 42vh;
+    //border: 1px dotted black;
     box-sizing: border-box;
     padding: 16px;
+    overflow-y: scroll;
 
     display: flex;
     flex-direction: row;
@@ -140,6 +172,7 @@ const BottomSheetContent= styled.div`
             background-color: lightblue;
             border: 1px solid black;
             border-radius: 4px;
+            box-shadow: 0 3px 5px silver;
         }
     }
     

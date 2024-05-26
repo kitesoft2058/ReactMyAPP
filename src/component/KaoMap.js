@@ -74,10 +74,19 @@ const KaoMap= (props)=>{
             console.log(latlng.getLat() +","+latlng.getLng())
 
             // 마커 위치를 클릭한 위치로 옮깁니다
-            //marker.setPosition(latlng);
+            var marker= new kakao.maps.Marker({
+                position: latlng,
+            })
+
+            // 지도에 마커를 표시합니다
+            marker.setMap(map)
 
             //bottom sheet show..
-            props.showBottomSheet()
+            props.showBottomSheet(latlng.getLat(), latlng.getLng())
+
+            //지도를 클릭한 위치로 이동
+            map.panTo(latlng)
+            
         })
         //-------------------------------------------
 
