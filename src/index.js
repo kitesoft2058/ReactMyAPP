@@ -3,11 +3,25 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import MyRouter from './MyRouter';
+import { legacy_createStore as createStore } from 'redux';
+import RootReducer from './redux/RootReducer';
+import { Provider } from 'react-redux';
+
+// Redux 를 통한 전역상태관리 작업
+const store= createStore(RootReducer)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    
+    {/* <MyRouter></MyRouter> */}
+
+    {/* (실습2) */}
+    <Provider store={store}>
+      <MyRouter></MyRouter>
+    </Provider>
   </React.StrictMode>
 );
 
